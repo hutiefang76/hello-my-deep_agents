@@ -65,29 +65,49 @@ def check_env_file() -> bool:
 
 
 def check_deps() -> bool:
-    deps = [
+    """检查必需依赖. 可选依赖 (gradio/pgvector/redis) 单独检查."""
+    required = [
         "langchain",
         "langchain_core",
         "langchain_community",
-        "langchain_openai",
         "langgraph",
-        "deepagents",
         "dashscope",
-        "fastapi",
-        "gradio",
         "dotenv",
     ]
-    missing = []
-    for d in deps:
+    optional = {
+        "deepagents": "Ch4 实战篇所有 lab 都用",
+        "fastapi": "Ch1.07 / Ch4 实战篇 Web 接入",
+        "gradio": "Ch4.1 / Ch4.3 网页对话 UI",
+        "ddgs": "Ch3 / Ch4 联网搜索 (备选 tavily)",
+    }
+
+    # 必需依赖
+    missing_required = []
+    for d in required:
         try:
             importlib.import_module(d)
         except ImportError:
-            missing.append(d)
+            missing_required.append(d)
 
-    if missing:
-        fail(f"缺失依赖: {missing}. 执行: pip install -r requirements.txt")
+    if missing_required:
+        fail(f"缺失必需依赖: {missing_required}. 执行: pip install -r requirements.txt")
         return False
-    ok(f"核心依赖已安装 ({len(deps)} 个)")
+    ok(f"必需依赖已安装 ({len(required)} 个)")
+
+    # 可选依赖 — 缺也不算失败, 但提示
+    missing_optional = []
+    for d, desc in optional.items():
+        try:
+            importlib.import_module(d)
+        except ImportError:
+            missing_optional.append((d, desc))
+
+    if missing_optional:
+        for d, desc in missing_optional:
+            warn(f"可选依赖 {d} 未装 — {desc}")
+    else:
+        ok(f"可选依赖已安装 ({len(optional)} 个)")
+
     return True
 
 
