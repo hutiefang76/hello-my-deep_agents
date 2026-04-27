@@ -74,6 +74,13 @@ runtime/
 .checkpoints/
 .deepagent_workspace/
 
+# ===== Lab 临时数据库 (验证脚本生成, 不进 git) =====
+**/_memory.db
+**/_three_layer.db
+**/_*.db
+*.sqlite
+*.sqlite3
+
 # ===== Vector store local data =====
 chroma_db/
 faiss_index/
