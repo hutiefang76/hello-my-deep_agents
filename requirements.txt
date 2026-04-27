@@ -1,0 +1,65 @@
+# ============================================================
+# hello-my-deep_agents · 全仓库统一依赖
+# Python: 3.10+
+# 安装: pip install -r requirements.txt
+# ============================================================
+
+# ----- 核心框架 -----
+langchain>=0.3.0,<0.4.0
+langchain-core>=0.3.0,<0.4.0
+langchain-community>=0.3.0,<0.4.0
+langchain-openai>=0.2.0
+langgraph>=0.2.50
+langgraph-checkpoint>=2.0.0
+langgraph-checkpoint-sqlite>=2.0.0
+
+# ----- DeepAgents (官方 LangChain AI) -----
+deepagents>=0.0.7
+
+# ----- LLM Provider -----
+dashscope>=1.20.0           # 阿里云通义 SDK
+# openai 已被 langchain-openai 引入, 这里不重复
+
+# ----- Embedding / 向量库 -----
+psycopg[binary]>=3.2.0      # PostgreSQL 驱动 (psycopg3)
+pgvector>=0.3.0             # pgvector Python 客户端
+sqlalchemy>=2.0.0
+
+# ----- Redis (会话记忆) -----
+redis>=5.0.0
+langgraph-checkpoint-redis>=0.0.5
+
+# ----- 文档处理 (RAG) -----
+pypdf>=5.0.0
+unstructured>=0.16.0
+markdown>=3.7
+beautifulsoup4>=4.12.0
+
+# ----- Web / UI -----
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
+gradio>=5.0.0
+pydantic>=2.9.0
+
+# ----- 搜索工具 -----
+tavily-python>=0.5.0
+duckduckgo-search>=6.3.0
+
+# ----- 工具库 -----
+python-dotenv>=1.0.0
+httpx>=0.27.0
+tenacity>=9.0.0
+rich>=13.9.0                # 终端美化输出
+typer>=0.13.0               # CLI
+
+# ----- 测试 -----
+pytest>=8.3.0
+pytest-asyncio>=0.24.0
+pytest-cov>=6.0.0
+
+# ----- 可观测性 (可选) -----
+langsmith>=0.1.140
+
+# ----- 开发工具 (可选) -----
+ruff>=0.7.0                 # linter + formatter
+mypy>=1.13.0

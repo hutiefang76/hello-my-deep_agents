@@ -1,0 +1,95 @@
+# ============================================================
+# hello-my-deep_agents · .gitignore
+# 红线: API key / 凭证类绝不进 git
+# ============================================================
+
+# ===== 凭证 =====
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+secrets/
+credentials/
+
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# ===== Virtual env =====
+.venv/
+venv/
+env/
+ENV/
+.python-version
+
+# ===== IDE =====
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# ===== Testing & Coverage =====
+.pytest_cache/
+.coverage
+.coverage.*
+.cache
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+.hypothesis/
+
+# ===== Jupyter =====
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# ===== Logs / runtime =====
+*.log
+logs/
+runtime/
+.langchain.db
+.checkpoints/
+.deepagent_workspace/
+
+# ===== Vector store local data =====
+chroma_db/
+faiss_index/
+*.faiss
+
+# ===== Docker volumes (本地) =====
+docker_data/
+pgdata/
+redisdata/
+
+# ===== Build artifacts =====
+*.pdf
+!docs/*.pdf
+out/
+target/
+
+# ===== OS =====
+Thumbs.db
+desktop.ini
