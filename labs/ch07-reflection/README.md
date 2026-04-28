@@ -8,6 +8,8 @@
 > *"Reflection alone, in some applications, gave bigger gains than upgrading the underlying model itself. The model automatically criticizes its own output and improves its response."*
 >
 > **中文翻译**：在某些应用中，**仅靠 Reflection 就能比升级底层模型本身带来更大的提升**. 模型自动批评自己的输出并改进.
+>
+> 详细参考 ref: [Andrew Ng — 4 Agentic Patterns](../../docs/references/big-names/05-andrew-ng.md) · 进阶类比 [Hassabis — DeepThink (AlphaGo-style search)](../../docs/references/big-names/03-hassabis.md) · Reflection 是 DeepThink 的单步版, ToT/搜索是它的深度版
 
 ---
 

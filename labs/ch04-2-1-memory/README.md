@@ -1,6 +1,8 @@
 # Ch 4.2.1 · 多层记忆
 
 > Agent 的"记忆"分三层 — 短期 / 会话 / 长期, 各自解决不同问题.
+>
+> 心智模型 ref: [Lilian Weng — Agent = Plan + Mem + Tool](../../docs/references/big-names/02-lilian-weng.md) · 三层记忆类比人脑感觉/短期/长期, 是整本教程的全书心智模型.
 
 ## 三层记忆对照
 

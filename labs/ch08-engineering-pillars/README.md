@@ -7,6 +7,8 @@
 > **OpenAI 原文** (English):
 > *"In production, an agent is not a prompt — it's a distributed system where the LLM happens to be the planner/executor. Define strict tool contracts, make state transitions deterministic, add trace-level observability, and ship evaluation in CI."*
 >
+> 详细参考 ref: [Schluntz/Anthropic — Building Effective Agents](../../docs/references/big-names/04-anthropic-schluntz.md) · 4 件套 (Tools/Memory/Guardrails/Eval) 是 5 Pattern 在生产 L5 阶段的工程化落地
+>
 > **中文翻译**：在生产环境，Agent 不是一个 prompt — 它是一个**分布式系统**，LLM 恰好是其中的规划/执行器. 定义严格工具契约、让状态转换确定化、加 trace 级可观测性、把评估纳入 CI.
 
 ---

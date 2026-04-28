@@ -6,6 +6,8 @@
 > *"Own your cognitive architecture, outsource agent infrastructure. Cognitive architecture is your moat."*
 >
 > **中文翻译**: 拥有你的认知架构, 外包智能体基础设施. 认知架构才是你的护城河.
+>
+> 详细参考 ref: [Chase — Cognitive Architecture / Own vs Outsource / 5 Levels](../../docs/references/big-names/06-chase.md) · 本章是 Chase 5 Levels 在真业务上的整套演化, 比 Chase 原文 blog 更落地
 
 ---
 

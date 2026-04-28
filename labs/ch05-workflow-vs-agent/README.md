@@ -10,6 +10,8 @@
 > "There's a spectrum of autonomy in LLM applications: code → single LLM call → chain → router → autonomous agent."
 >
 > **中文翻译**：LLM 应用存在自主性谱系：硬编码 → 单次 LLM 调用 → 链 → 路由 → 自主智能体。
+>
+> 详细参考 ref: [Schluntz/Anthropic — Building Effective Agents](../../docs/references/big-names/04-anthropic-schluntz.md) · [Chase — Cognitive Architecture / 5 Levels](../../docs/references/big-names/06-chase.md)
 
 ---
 

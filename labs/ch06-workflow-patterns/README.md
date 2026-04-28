@@ -8,6 +8,8 @@
 > *"We've found that the most successful implementations weren't using complex frameworks or specialized libraries. Instead, they were building with simple, composable patterns."*
 >
 > **中文翻译**：最成功的实现不是用复杂框架或专门库，而是用**简单可组合的模式**.
+>
+> 详细参考 ref: [Schluntz/Anthropic — Building Effective Agents · 5 Patterns](../../docs/references/big-names/04-anthropic-schluntz.md)
 
 ---
 

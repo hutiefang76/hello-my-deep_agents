@@ -1,6 +1,8 @@
 # Ch 4.1 · DeepAgents 快速开始 + Gradio UI
 
 > "像 Spring Boot 一样三参数启动 Agent" — 然后给它一个网页对话界面.
+>
+> 心智模型 ref: [Karpathy — LLM OS](../../docs/references/big-names/01-karpathy.md) · DeepAgents 是 LLM OS 视角的具象化 (内核 + 工具 + 文件系统 + 子进程).
 
 ## 学完能力
 
