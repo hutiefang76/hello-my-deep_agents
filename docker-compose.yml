@@ -1,15 +1,77 @@
 # ============================================================
-# hello-my-deep_agents · 中间件
-# 启动: docker compose up -d pgvector redis
-# 停止: docker compose down
-# 清数据: docker compose down -v
+# hello-my-deep_agents · 完整 Docker 化栈
 #
-# 仅 Ch4.2.1 (Memory) 和 Ch4.2.3 (RAG) lab 需要
-# 其他 lab 不依赖中间件, 可裸跑
+# 跨平台跑 (macOS / Windows / Linux), 只要装了 Docker:
+#
+#   1. cp .env.example .env  (填 DASHSCOPE_API_KEY)
+#   2. docker compose up -d              # 起所有服务 (app + pgvector + redis + gradio)
+#   3. docker compose run --rm app bash  # 进 app 容器跑 lab
+#   4. docker compose logs -f gradio     # 看 Gradio 日志, 浏览器开 :7861
+#
+# 服务清单:
+#   app       Python 3.11 + 全部依赖, 跑 lab 用
+#   gradio    Ch4.3 全功能 Gradio UI (port 7861)
+#   pgvector  向量库 (Memory / RAG lab)
+#   redis     会话存储 (Memory lab)
 # ============================================================
 
 services:
-  # PostgreSQL + pgvector 扩展 (向量库 + 关系库二合一)
+  # ===== 主应用容器 (跑 lab 脚本用) =====
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: deepagents-tutorial:latest
+    container_name: deepagents-app
+    env_file:
+      - .env
+    environment:
+      # 容器内连中间件用容器名 (覆盖 .env 中 localhost 配置)
+      PGVECTOR_HOST: pgvector
+      REDIS_HOST: redis
+    volumes:
+      # 代码挂载: 改文件不用重 build
+      - ./labs:/app/labs
+      - ./common:/app/common
+      - ./scripts:/app/scripts
+      - ./docs:/app/docs
+    depends_on:
+      pgvector:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    stdin_open: true
+    tty: true
+    command: ["bash"]
+
+  # ===== Gradio 全功能 UI (Ch4.3 集大成 demo) =====
+  gradio:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: deepagents-tutorial:latest
+    container_name: deepagents-gradio
+    env_file:
+      - .env
+    environment:
+      PGVECTOR_HOST: pgvector
+      REDIS_HOST: redis
+      GRADIO_PORT: "7861"
+    ports:
+      - "7861:7861"
+    volumes:
+      - ./labs:/app/labs
+      - ./common:/app/common
+      - ./scripts:/app/scripts
+    depends_on:
+      pgvector:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: ["python", "labs/ch04-3-summary/src/02_gradio_full_ui.py"]
+    restart: unless-stopped
+
+  # ===== PostgreSQL + pgvector =====
   pgvector:
     image: pgvector/pgvector:pg16
     container_name: deepagents-pgvector
@@ -29,7 +91,7 @@ services:
       retries: 5
     restart: unless-stopped
 
-  # Redis (会话记忆 / LangGraph Checkpointer)
+  # ===== Redis =====
   redis:
     image: redis:7-alpine
     container_name: deepagents-redis

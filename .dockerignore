@@ -1,0 +1,38 @@
+# 不进 Docker 镜像
+.git
+.venv
+venv
+__pycache__
+*.pyc
+*.pyo
+.pytest_cache
+.coverage
+htmlcov
+.idea
+.vscode
+*.log
+node_modules
+dist
+build
+*.egg-info
+
+# 临时数据库 / 工作区
+*.sqlite
+*.sqlite3
+**/_*.db
+.deepagent_workspace
+.checkpoints
+
+# IDE / OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 密钥 (额外保险层, .env 已在 .gitignore)
+.env
+.env.local
+
+# Docker 镜像/构建产物
+docker_data
+pgdata
+redisdata

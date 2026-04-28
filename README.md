@@ -50,27 +50,55 @@
 
 ## 30 秒上手
 
+### 🐳 推荐路径: Docker (跨平台一键启动)
+
+> 任何电脑只要装了 [Docker](https://www.docker.com/products/docker-desktop/) (macOS / Windows / Linux), 都能一键跑.
+
 ```bash
-# 1. clone
+# 1. clone + 配 key
 git clone git@github.com:hutiefang76/hello-my-deep_agents.git
 cd hello-my-deep_agents
-
-# 2. 配 key (复制模板, 填上你的阿里云 DashScope API Key)
 cp .env.example .env
-# 编辑 .env, 把 DASHSCOPE_API_KEY=sk-xxxx 改成你自己的 key
-# 申请地址: https://bailian.console.aliyun.com/?apiKey=1
+# 编辑 .env, 填 DASHSCOPE_API_KEY (https://bailian.console.aliyun.com 申请)
 
-# 3. 装依赖
+# 2. 一键启动 (首次约 5-10 分钟下载/装依赖)
+make build && make up
+
+# 3. 跑 lab (任选一个)
+make run-ch09        # Ch9 L1-L5 演化对比 (最直观)
+make run-e2e         # Ch4.3 端到端集大成 demo
+make ui              # 浏览器开 Gradio UI: http://localhost:7861
+
+# 4. 或者进容器手动跑
+make shell
+# (容器内) python labs/ch05-workflow-vs-agent/src/01_decision_tree.py
+
+# 5. 验证全量 (16 lab 跑通, 约 20 分钟真调 LLM)
+make verify-all
+```
+
+**完整 Docker 文档**: [docs/05-Docker部署指南.md](docs/05-Docker部署指南.md)
+
+---
+
+### 🐍 备选路径: 本地 Python (无 Docker)
+
+```bash
+# 1. clone + 配 key (同上)
+git clone git@github.com:hutiefang76/hello-my-deep_agents.git
+cd hello-my-deep_agents
+cp .env.example .env
+
+# 2. 装依赖 (建议 Python 3.10/3.11, 避免 3.14 的兼容警告)
 python -m venv .venv
 source .venv/bin/activate    # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 
-# 4. (可选) 启动中间件 — 仅 RAG / Memory lab 需要
+# 3. (可选) 启动中间件 — 仅 RAG / Memory lab 需要
 docker compose up -d pgvector redis
 
-# 5. 跑第一个 lab
-cd labs/ch01-python-basics
-python 01_hello_world.py
+# 4. 跑 lab
+python labs/ch01-python-basics/src/01_hello_world.py
 ```
 
 ---
