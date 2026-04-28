@@ -1,0 +1,16 @@
+# Ch10 RAG 多路召回 — 增量依赖
+#
+# 全仓库依赖见根目录 requirements.txt; 这里只列 Ch10 独有的.
+# 安装: pip install -r requirements.txt
+
+# BM25 算法实现 (LangChain BM25Retriever 底层依赖)
+rank_bm25>=0.2.2
+
+# 中文分词 (BM25 在中文场景必需 — 默认按字符切召回会很差)
+jieba>=0.42.1
+
+# 可选 — 装上即启用真正的 BGE Reranker (cross-encoder)
+# 默认不装, 06_reranker.py 会自动 fallback 到 LLM listwise rerank
+# 如要启用, 取消下两行注释:
+# torch>=2.0
+# sentence-transformers>=2.7
