@@ -2,18 +2,25 @@
 # hello-my-deep_agents · Makefile
 # 跨平台一键命令 (macOS / Windows-WSL / Linux 都支持)
 #
-# 用法:
-#   make help        看所有命令
-#   make up          启动全部服务 (app + pgvector + redis + gradio)
-#   make shell       进 app 容器 bash
-#   make verify-all  跑全量 verify
-#   make ui          打开 Gradio UI 浏览器
-#   make down        停服务
+# 两条路径:
+#
+#   推荐路径 · IDEA-first (像跑 Spring Boot 一样在 PyCharm 里跑 Python):
+#     make mw-up         只起中间件 (pgvector + redis)
+#     # 在 PyCharm 里右键 Run labs/chXX/src/01_xxx.py
+#     make mw-down       关中间件
+#
+#   备选路径 · Docker 完整栈 (跨机器复现 / CI):
+#     make build         构建镜像
+#     make up            起全部 (app + gradio + pgvector + redis)
+#     make shell         进容器跑 lab
 # ============================================================
 
-.PHONY: help build up down shell logs verify-all verify-ch ui clean test ps
+.PHONY: help build up down shell logs verify-all verify-ch ui clean test ps mw-up mw-down mw-logs mw-ps
 
 DEFAULT_GOAL := help
+
+# 中间件专属 compose 文件 (IDEA-first 路径)
+MW_COMPOSE := docker-compose.middleware.yml
 
 help: ## 显示此帮助
 	@echo "hello-my-deep_agents · Make 命令"
@@ -21,11 +28,40 @@ help: ## 显示此帮助
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
 		awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2}'
 	@echo ""
-	@echo "30 秒上手 (30-second onboarding):"
+	@echo "30 秒上手 · IDEA-first (推荐):"
 	@echo "  1. cp .env.example .env  && 编辑填 DASHSCOPE_API_KEY"
-	@echo "  2. make build"
-	@echo "  3. make up"
-	@echo "  4. make ui  # 浏览器开 http://localhost:7861"
+	@echo "  2. python -m venv .venv && .venv\Scripts\activate (Win) 或 source .venv/bin/activate"
+	@echo "  3. pip install -r requirements.txt"
+	@echo "  4. make mw-up                        # 只起中间件"
+	@echo "  5. 在 PyCharm 里 Run labs/chXX/src/01_xxx.py"
+	@echo "     详见 docs/08-IDEA配置指南.md"
+	@echo ""
+	@echo "完整 Docker 路径 (备选, 跨机复现 / CI):"
+	@echo "  1. cp .env.example .env  && 编辑填 DASHSCOPE_API_KEY"
+	@echo "  2. make build && make up"
+	@echo "  3. make ui  # http://localhost:7861"
+
+# ===== IDEA-first 路径: 只跑中间件 (推荐) =====
+
+mw-up: ## (推荐) 只起 pgvector + redis 中间件, IDEA 里跑 Python
+	docker compose -f $(MW_COMPOSE) up -d
+	@echo ""
+	@echo "✅ 中间件已起:"
+	@docker compose -f $(MW_COMPOSE) ps
+	@echo ""
+	@echo "下一步: 在 PyCharm/IDEA 里 Run labs/chXX/src/xx.py"
+	@echo "       详见 docs/08-IDEA配置指南.md"
+
+mw-down: ## 关中间件 (保留数据卷)
+	docker compose -f $(MW_COMPOSE) down
+
+mw-logs: ## 跟随中间件日志
+	docker compose -f $(MW_COMPOSE) logs -f
+
+mw-ps: ## 看中间件状态
+	docker compose -f $(MW_COMPOSE) ps
+
+# ===== Docker 完整栈路径 (备选) =====
 
 build: ## 构建 app 镜像 (Python 3.11 + 全部依赖)
 	docker compose build
@@ -49,7 +85,7 @@ clean: ## 停服务 + 清数据卷 (彻底重置)
 ps: ## 查看服务状态
 	docker compose ps
 
-shell: ## 进 app 容器 bash (推荐: 跑 lab 用)
+shell: ## 进 app 容器 bash (跑 lab 用)
 	docker compose run --rm app bash
 
 logs: ## 跟随所有服务日志

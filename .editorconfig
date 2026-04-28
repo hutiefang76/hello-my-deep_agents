@@ -1,0 +1,35 @@
+# ============================================================
+# hello-my-deep_agents · EditorConfig
+# https://editorconfig.org/
+#
+# 让 PyCharm / IntelliJ IDEA / VS Code 等编辑器跨机器统一格式.
+# JetBrains 系 IDE 默认就识别 .editorconfig, 不用装插件.
+# ============================================================
+
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.py]
+indent_size = 4
+max_line_length = 100
+
+[*.{yml,yaml}]
+indent_size = 2
+
+[*.{json,toml}]
+indent_size = 2
+
+[*.md]
+# Markdown trailing space 是硬换行语义, 不能 trim
+trim_trailing_whitespace = false
+
+[Makefile]
+# Makefile 必须是 tab
+indent_style = tab

@@ -50,9 +50,9 @@
 
 ## 30 秒上手
 
-### 🐳 推荐路径: Docker (跨平台一键启动)
+### 推荐路径 · 本地 Python + IDEA (Java 工程师友好)
 
-> 任何电脑只要装了 [Docker](https://www.docker.com/products/docker-desktop/) (macOS / Windows / Linux), 都能一键跑.
+> 像在 IntelliJ IDEA 里跑 Spring Boot 一样, 在 PyCharm 或 IntelliJ IDEA 里**右键 Run** 任意 `01_xxx.py`. Docker 只起两个中间件 (pgvector + redis), 跟你本地起 MySQL+Redis 一个意思.
 
 ```bash
 # 1. clone + 配 key
@@ -60,6 +60,39 @@ git clone git@github.com:hutiefang76/hello-my-deep_agents.git
 cd hello-my-deep_agents
 cp .env.example .env
 # 编辑 .env, 填 DASHSCOPE_API_KEY (https://bailian.console.aliyun.com 申请)
+
+# 2. 建 venv + 装依赖 (建议 Python 3.10/3.11)
+python -m venv .venv
+# Windows: .venv\Scripts\activate
+source .venv/bin/activate    # macOS / Linux
+pip install -r requirements.txt
+
+# 3. (可选) 起中间件 — Ch4.2.1 / Ch4.2.3 / Ch4.3 的 lab 才需要
+make mw-up
+# 验证: docker compose -f docker-compose.middleware.yml ps  → pgvector / redis healthy
+
+# 4. 在 PyCharm / IntelliJ IDEA 里 Run lab
+#    File → Open → 选仓库根目录
+#    详细配置 (Python SDK / Sources Root / EnvFile 插件) 见下方完整指南
+#    然后右键 Run labs/ch04-1-quickstart-ui/src/01_quickstart.py
+
+# 5. 关中间件 (下班前)
+make mw-down
+```
+
+**完整 IDEA / PyCharm 配置指南** (一次性 5 分钟): [docs/08-IDEA配置指南.md](docs/08-IDEA配置指南.md)
+
+---
+
+### 备选路径 · Docker 完整栈 (跨机复现 / CI 用)
+
+> 任何电脑只要装了 [Docker](https://www.docker.com/products/docker-desktop/) (macOS / Windows / Linux), 都能一键跑. **不需要装 Python / 不需要建 venv**, 适合验证教程能跑通 / 跨机器复现 / CI.
+
+```bash
+# 1. clone + 配 key (同上)
+git clone git@github.com:hutiefang76/hello-my-deep_agents.git
+cd hello-my-deep_agents
+cp .env.example .env
 
 # 2. 一键启动 (首次约 5-10 分钟下载/装依赖)
 make build && make up
@@ -81,28 +114,6 @@ make verify-all
 
 ---
 
-### 🐍 备选路径: 本地 Python (无 Docker)
-
-```bash
-# 1. clone + 配 key (同上)
-git clone git@github.com:hutiefang76/hello-my-deep_agents.git
-cd hello-my-deep_agents
-cp .env.example .env
-
-# 2. 装依赖 (建议 Python 3.10/3.11, 避免 3.14 的兼容警告)
-python -m venv .venv
-source .venv/bin/activate    # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-
-# 3. (可选) 启动中间件 — 仅 RAG / Memory lab 需要
-docker compose up -d pgvector redis
-
-# 4. 跑 lab
-python labs/ch01-python-basics/src/01_hello_world.py
-```
-
----
-
 ## Lab 列表 — 每个都能 `python xx.py` 直接跑
 
 ### Part 1 · 理论篇
@@ -120,7 +131,8 @@ python labs/ch01-python-basics/src/01_hello_world.py
 | `labs/ch04-1-quickstart-ui/` | `create_deep_agent` 三参数启动 + Gradio 网页对话 | `http://localhost:7860` |
 | `labs/ch04-2-1-memory/` | 多层记忆（messages / checkpointer / vector long-term） | CLI |
 | `labs/ch04-2-2-intent/` | 意图分类 + StateGraph 条件路由 | CLI |
-| `labs/ch04-2-3-tools-rag/` | 工具调用 + PgVector RAG + write_file 落盘 | CLI |
+| `labs/ch04-2-3-tools-rag/` | 工具调用 + RAG (InMemoryVectorStore 教学版) + write_file 落盘 | CLI |
+| `labs/ch10-rag-multi-retrieval/` | RAG 多路召回 (BM25 + Hybrid RRF + MultiQuery + HyDE + Reranker) | CLI |
 | `labs/ch04-2-4-subagent/` | 主-子 Agent 编排（研究员/批评家/写手） | CLI |
 | `labs/ch04-3-summary/` | 集大成端到端 demo + Gradio 全功能 UI | `http://localhost:7861` |
 
@@ -165,6 +177,14 @@ python labs/ch01-python-basics/src/01_hello_world.py
 
 ---
 
+## 思想血脉
+
+本教程的每一章背后, 都站着 1-2 位塑造 LLM/Agent 行业的大佬 — 不是装饰, 是设计依据. 一句话索引: [Karpathy LLM OS](docs/references/big-names/01-karpathy.md) · [Lilian Weng 三件套](docs/references/big-names/02-lilian-weng.md) · [Anthropic 5 Pattern](docs/references/big-names/04-anthropic-schluntz.md) · [Andrew Ng Reflection](docs/references/big-names/05-andrew-ng.md) · [Chase Cognitive Architecture](docs/references/big-names/06-chase.md).
+
+完整地图 + Timeline + 落地导航见 [docs/07-大佬思想全景.md](docs/07-大佬思想全景.md); 工具栈 6 大类 (LLM/编排/状态机/脚手架/向量库/Eval) 候选对比见 [docs/06-LLM应用工具栈全景.md](docs/06-LLM应用工具栈全景.md).
+
+---
+
 ## 开发参与
 
 提交规范：每个 lab/章节 **单独 commit**，commit message 形如：
@@ -174,7 +194,7 @@ feat(ch04-2-1): implement multi-layer memory (short-term / session / long-term)
 
 - 短期记忆: messages list (window=10)
 - 会话记忆: LangGraph Checkpointer + Redis
-- 长期记忆: PgVector vector store
+- 长期记忆: 向量库 (InMemoryVectorStore 教学版, 生产可换 PgVector)
 
 Verify: bash labs/ch04-2-1-memory/verify.sh
         ✅ short_term_test PASSED
