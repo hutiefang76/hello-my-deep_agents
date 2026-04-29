@@ -1,0 +1,7 @@
+# Case 2 · Python MCP wrapper 依赖
+
+# MCP 官方 Python SDK (含 FastMCP server + ClientSession)
+mcp>=1.0
+
+# HTTP client (调 Java REST 服务)
+httpx>=0.27

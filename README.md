@@ -139,6 +139,7 @@ make verify-all
 | `labs/ch04-2-2-intent/` | 意图分类 + StateGraph 条件路由 | CLI |
 | `labs/ch04-2-3-tools-rag/` | 工具调用 + RAG (InMemoryVectorStore 教学版) + write_file 落盘 | CLI |
 | `labs/ch10-rag-multi-retrieval/` | RAG 多路召回 (BM25 + Hybrid RRF + MultiQuery + HyDE + Reranker) | CLI |
+| `labs/ch12-mcp-a2a/` | MCP + A2A 协议 (SpringBoot Java SDK / Python wrapper / A2A demo) | CLI / SSE |
 | `labs/ch04-2-4-subagent/` | 主-子 Agent 编排（研究员/批评家/写手） | CLI |
 | `labs/ch04-3-summary/` | 集大成端到端 demo + Gradio 全功能 UI | `http://localhost:7861` |
 

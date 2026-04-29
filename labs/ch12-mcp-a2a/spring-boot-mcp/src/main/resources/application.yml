@@ -1,0 +1,28 @@
+# Spring Boot MCP Server 配置.
+# 加了 spring-ai-starter-mcp-server-webmvc 后, MCP 自动暴露在 HTTP SSE.
+
+server:
+  port: 8080
+
+spring:
+  application:
+    name: order-mcp-server
+
+  ai:
+    mcp:
+      server:
+        # MCP server 名称 (出现在 client 看到的 server list)
+        name: order-mcp-server
+        version: 0.1.0
+        # 传输协议: SYNC (同步 SSE) / ASYNC (异步)
+        type: SYNC
+        # 工具变更时通知 client (实时更新)
+        tool-change-notification: true
+        # SSE endpoint (默认 /sse, 这里显式声明)
+        sse-message-endpoint: /mcp/message
+        sse-endpoint: /sse
+
+logging:
+  level:
+    org.springframework.ai: DEBUG
+    com.example.order: DEBUG

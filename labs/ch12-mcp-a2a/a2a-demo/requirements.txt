@@ -1,0 +1,5 @@
+# Case 3 · A2A Demo 依赖
+fastapi>=0.115
+uvicorn[standard]>=0.32
+httpx>=0.27
+pydantic>=2.9
