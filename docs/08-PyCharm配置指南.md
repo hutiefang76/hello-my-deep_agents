@@ -1,8 +1,11 @@
-# IDEA / PyCharm 配置指南 — 像跑 Spring Boot 一样跑 Python
+# PyCharm / IntelliJ IDEA 配置指南 — 像跑 Spring Boot 一样跑 Python
 
 > 面向 **Java 工程师**: 你不用学 Docker 工作流, 也不用 `make shell` 进容器. 你只需要在 PyCharm 或 IntelliJ IDEA 里像跑 `Application.java` 一样**右键 Run** 任意 `01_xxx.py`. Docker 只负责跑两个中间件 (pgvector + redis), 跟你本地起 MySQL+Redis 一个意思.
 
-本指南面向: **PyCharm Community / Professional 2024.1+** 或 **IntelliJ IDEA 2024.1+ (装 Python 插件)**.
+本指南**主推 PyCharm** (Python 工程师首选), 同时兼容 IntelliJ IDEA. 验证版本:
+- ✅ **PyCharm Community / Professional 2024.1+ (含 2026.1.x)**
+- ✅ **IntelliJ IDEA Ultimate 2024.1+** (装 Python 插件; Community 版不支持 Python)
+
 所有截图占位用 `> 截图: xxx.png` 标记, 真截图后续补.
 
 ---

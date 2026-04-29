@@ -80,7 +80,7 @@ make mw-up
 make mw-down
 ```
 
-**完整 IDEA / PyCharm 配置指南** (一次性 5 分钟): [docs/08-IDEA配置指南.md](docs/08-IDEA配置指南.md)
+**完整 PyCharm / IntelliJ IDEA 配置指南** (一次性 5 分钟): [docs/08-PyCharm配置指南.md](docs/08-PyCharm配置指南.md)
 
 ---
 
