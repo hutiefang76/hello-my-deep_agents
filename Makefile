@@ -15,7 +15,7 @@
 #     make shell         进容器跑 lab
 # ============================================================
 
-.PHONY: help build up down shell logs verify-all verify-ch ui clean test ps mw-up mw-down mw-logs mw-ps
+.PHONY: help setup run-configs build up down shell logs verify-all verify-ch ui clean test ps mw-up mw-down mw-logs mw-ps
 
 DEFAULT_GOAL := help
 
@@ -28,20 +28,30 @@ help: ## 显示此帮助
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
 		awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2}'
 	@echo ""
-	@echo "30 秒上手 · IDEA-first (推荐):"
+	@echo "30 秒上手 · PyCharm-first (推荐):"
 	@echo "  1. cp .env.example .env  && 编辑填 DASHSCOPE_API_KEY"
-	@echo "  2. python -m venv .venv && .venv\Scripts\activate (Win) 或 source .venv/bin/activate"
-	@echo "  3. pip install -r requirements.txt"
-	@echo "  4. make mw-up                        # 只起中间件"
-	@echo "  5. 在 PyCharm 里 Run labs/chXX/src/01_xxx.py"
-	@echo "     详见 docs/08-IDEA配置指南.md"
+	@echo "  2. make setup                        # 一键建 .venv + 装全部依赖 (5 分钟)"
+	@echo "     # Windows 用户也可双击 setup.bat"
+	@echo "  3. make run-configs                  # 一键生成 62 个 PyCharm Run Config"
+	@echo "  4. (可选) make mw-up                 # 起中间件 (Memory/RAG lab 用)"
+	@echo "  5. 在 PyCharm 选 interpreter 为 .venv, 顶部 dropdown 选任意 lab Run"
+	@echo "     详见 docs/08-PyCharm配置指南.md"
 	@echo ""
 	@echo "完整 Docker 路径 (备选, 跨机复现 / CI):"
 	@echo "  1. cp .env.example .env  && 编辑填 DASHSCOPE_API_KEY"
 	@echo "  2. make build && make up"
 	@echo "  3. make ui  # http://localhost:7861"
 
-# ===== IDEA-first 路径: 只跑中间件 (推荐) =====
+# ===== PyCharm-first 路径: 一键 setup + run config =====
+
+setup: ## (推荐第一步) 一键建 .venv + 装全部依赖 (5 分钟)
+	@bash setup.sh 2>/dev/null || cmd //c setup.bat
+
+run-configs: ## 批量生成 PyCharm Run Configurations (62 个)
+	@.venv/Scripts/python.exe scripts/gen_run_configs.py 2>/dev/null || \
+	 .venv/bin/python scripts/gen_run_configs.py
+
+# ===== IDEA-first 路径: 只跑中间件 =====
 
 mw-up: ## (推荐) 只起 pgvector + redis 中间件, IDEA 里跑 Python
 	docker compose -f $(MW_COMPOSE) up -d
@@ -50,7 +60,7 @@ mw-up: ## (推荐) 只起 pgvector + redis 中间件, IDEA 里跑 Python
 	@docker compose -f $(MW_COMPOSE) ps
 	@echo ""
 	@echo "下一步: 在 PyCharm/IDEA 里 Run labs/chXX/src/xx.py"
-	@echo "       详见 docs/08-IDEA配置指南.md"
+	@echo "       详见 docs/08-PyCharm配置指南.md"
 
 mw-down: ## 关中间件 (保留数据卷)
 	docker compose -f $(MW_COMPOSE) down

@@ -10,21 +10,34 @@
 
 ---
 
-## 1. 总览 · IDEA-first 工作流
+## 1. 总览 · PyCharm-first 工作流 (一键化)
 
 ```
-Step 1  Docker 起中间件 (5 秒)
-        make mw-up        # pgvector :5432 / redis :6379
+Step 0  双击 setup.bat (Win)  或  bash setup.sh (mac/Linux)   ← 一键搞定 venv + 依赖
+        建 .venv (项目根)
+        pip install -r requirements.txt
+        装 Ch10 增量依赖 (rank_bm25 + jieba)
+        校验 import dotenv/langchain/langgraph/gradio/pydantic
 
-Step 2  PyCharm 配 venv + .env (一次性, 5 分钟)
-        (1) 配 Python SDK (本仓库 .venv)
-        (2) mark common/ + labs/ 为 Sources Root
-        (3) 装 EnvFile 插件 + 改 Run Config 模板
+Step 1  make run-configs                                      ← 一键生成 62 个 Run Config
+        .run/ 目录下生成 .run.xml, PyCharm 自动识别
 
-Step 3  右键 Run 任意 lab 脚本
-        labs/ch04-1-quickstart-ui/src/01_quickstart.py
-        IDEA 自动加载 .env, 自动连 localhost:5432 pgvector
+Step 2  (可选) make mw-up                                      ← 仅 Memory/RAG lab 需要
+        起 pgvector :5432 + redis :6379
+
+Step 3  PyCharm 打开仓库:
+        Settings → Project → Python Interpreter
+          → Add Local Interpreter → Existing → .venv\Scripts\python.exe
+        ★ 这一步是 PyCharm 用户最容易踩坑的地方 ★
+
+Step 4  PyCharm 顶部 Run dropdown 自动列出 62 个 "ch0X · NN_xxx"
+        选一个 → 点 Run ▶
+        .env 自动加载, PYTHONPATH 自动设, common/ 自动可 import
 ```
+
+> **🚨 最常见踩坑** — 如果 PyCharm interpreter 指向 `PyCharmMiscProject\.venv` 或 system Python,
+> 跑任何脚本都会报 `ModuleNotFoundError: No module named 'dotenv'`.
+> **解法**: Settings → Project → Python Interpreter → Add Local → **Existing → 项目根的 `.venv\Scripts\python.exe`**
 
 对比 Java 工程师的熟悉路径:
 
@@ -45,9 +58,35 @@ Step 3  右键 Run 任意 lab 脚本
 | 工具 | 版本 | 备注 |
 |---|---|---|
 | Python | **3.10 / 3.11** (强烈推荐 3.11) | Win 装时勾 "Add to PATH". 3.14 有依赖兼容警告, 别用. |
-| PyCharm 或 IntelliJ IDEA | **2024.1+** | Community 够用. IDEA 需装 Python 插件 (Settings → Plugins 搜 Python). |
+| PyCharm 或 IntelliJ IDEA | **2024.1+** (含 2026.1.x) | Community 够用. IDEA 需装 Python 插件 (Settings → Plugins 搜 Python). |
 | Docker Desktop | **24.0+** | 只用来跑中间件. |
 | Git | 任意 | clone 仓库 |
+
+## 2.5 一键 setup (推荐路径)
+
+不用看后面 step-by-step 那一长段, 跑这两条命令就完事:
+
+**Windows (双击或 cmd 里跑):**
+```cmd
+setup.bat
+.venv\Scripts\python.exe scripts\gen_run_configs.py
+```
+
+**macOS / Linux:**
+```bash
+bash setup.sh
+.venv/bin/python scripts/gen_run_configs.py
+```
+
+**任意系统 (有 make):**
+```bash
+make setup
+make run-configs
+```
+
+跑完之后, PyCharm 打开本目录 + 配 interpreter (Step 3) → 就能 Run 了.
+
+后面的 Step-by-step 章节是给"想知道每一步在做什么"的同学看的, 一键 setup 已经全部自动化.
 
 验证:
 ```bash

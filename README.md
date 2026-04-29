@@ -61,24 +61,30 @@ cd hello-my-deep_agents
 cp .env.example .env
 # 编辑 .env, 填 DASHSCOPE_API_KEY (https://bailian.console.aliyun.com 申请)
 
-# 2. 建 venv + 装依赖 (建议 Python 3.10/3.11)
-python -m venv .venv
-# Windows: .venv\Scripts\activate
-source .venv/bin/activate    # macOS / Linux
-pip install -r requirements.txt
+# 2. 一键 setup (建 .venv + 装全部依赖, 约 5 分钟)
+#    Windows: 双击 setup.bat   或  cmd 里跑 setup.bat
+#    macOS/Linux: bash setup.sh
+#    或: make setup  (跨平台)
 
-# 3. (可选) 起中间件 — Ch4.2.1 / Ch4.2.3 / Ch4.3 的 lab 才需要
+# 3. 一键生成 PyCharm Run Configurations (62 个)
+make run-configs
+#    或直接: .venv/Scripts/python.exe scripts/gen_run_configs.py  (Win)
+#           .venv/bin/python scripts/gen_run_configs.py            (mac/Linux)
+
+# 4. (可选) 起中间件 — Ch4.2.1 / Ch4.2.3 / Ch4.3 / Ch10 的 lab 才需要
 make mw-up
 # 验证: docker compose -f docker-compose.middleware.yml ps  → pgvector / redis healthy
 
-# 4. 在 PyCharm / IntelliJ IDEA 里 Run lab
+# 5. 在 PyCharm 里 Run
 #    File → Open → 选仓库根目录
-#    详细配置 (Python SDK / Sources Root / EnvFile 插件) 见下方完整指南
-#    然后右键 Run labs/ch04-1-quickstart-ui/src/01_quickstart.py
+#    Settings → Project → Python Interpreter → 指向项目根的 .venv  (关键!)
+#    顶部 Run dropdown 自动出现 62 个 "ch0X · NN_xxx" — 选一个 Run ▶
 
-# 5. 关中间件 (下班前)
+# 6. 关中间件 (下班前)
 make mw-down
 ```
+
+> **🚨 PyCharm 用户最常踩的坑**: interpreter 默认指向 `PyCharmMiscProject\.venv` (空项目). 必须手动 Settings → Project → Python Interpreter → Add Local → **Existing → 项目根的 `.venv\Scripts\python.exe`**. 否则会报 `ModuleNotFoundError: No module named 'dotenv'`.
 
 **完整 PyCharm / IntelliJ IDEA 配置指南** (一次性 5 分钟): [docs/08-PyCharm配置指南.md](docs/08-PyCharm配置指南.md)
 
